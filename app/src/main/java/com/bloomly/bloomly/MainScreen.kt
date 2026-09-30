@@ -44,10 +44,14 @@ fun MainScreen(){
             modifier = Modifier.padding(padding)
         ){
             composable(Routes.Home.route) {
-                Text("HOME")
+                HomeScreen({ it })
             }
             composable(Routes.Login.route) {
-                Text("LOGIN")
+                LoginScreen(onSubmit = {
+                    navController.navigate(Routes.Home.route){
+                        launchSingleTop = true
+                    }
+                })
             }
         }
     }
@@ -69,7 +73,10 @@ fun BottomBar(currentRoute: String?, navController: NavController){
                                 launchSingleTop = true
                             }
                         },
-                        icon = { Icon(painter = painterResource(item.icon), contentDescription = null ) },
+                        icon = { Icon(
+                            imageVector = item.icon,
+                            contentDescription = null )
+                               },
                         label = {Text(item.label)}
                     )
                 }
