@@ -1,60 +1,61 @@
 package com.bloomly.bloomly
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.ExperimentalGridApi
+import androidx.compose.foundation.layout.Grid
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Construction
+import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.HeartBroken
-import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Percent
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SetMeal
-import androidx.compose.material.icons.filled.Tag
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.dropShadow
-import androidx.compose.ui.draw.innerShadow
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import com.bloomly.bloomly.ui.theme.LiberationSansFamily
 
 @Preview
 @Composable
 private fun PreviewHomeScreen(){
-    HomeScreen(onSearch = {})
+    Scaffold(Modifier.fillMaxWidth()) { padding ->
+        Spacer(Modifier.padding(padding))
+        HomeScreen(onSearch = {})
+    }
 }
 @Composable
 fun HomeScreen(onSearch: (String) -> Unit){
@@ -64,15 +65,27 @@ fun HomeScreen(onSearch: (String) -> Unit){
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Spacer(Modifier.height(20.dp))
         Text(
-            text = "Welcome User...",
+            text = "Hai, John!",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 20.dp),
-            textAlign = TextAlign.Start
+                .padding(vertical = 6.dp),
+            textAlign = TextAlign.Start,
+            fontFamily = LiberationSansFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 6.em
+        )
+        Text(
+            text = "Siap membuat hari seseorang lebih special?",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start,
+            fontFamily = LiberationSansFamily,
+            color = Color(0x65000000)
         )
         Spacer(Modifier.height(48.dp))
         TextField(
@@ -92,137 +105,218 @@ fun HomeScreen(onSearch: (String) -> Unit){
             },
             lineLimits = TextFieldLineLimits.SingleLine
         )
-        Spacer(Modifier.height(24.dp))
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-        ){
-            item{
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp)
-                        .aspectRatio(1f)
-                        .align(Alignment.CenterHorizontally),
-                    contentAlignment = Alignment.Center
-                ){
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Filled.HeartBroken,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clickable(true, onClick = {})
-                                .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
-                                .padding(18.dp)
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        Text("Buket")
-                    }
-                }
-            }
-
-            item{
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp)
-                        .aspectRatio(1f)
-                        .align(Alignment.CenterHorizontally),
-                    contentAlignment = Alignment.Center
-                ){
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Filled.SetMeal,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clickable(true, onClick = {})
-                                .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
-                                .padding(18.dp)
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        Text("Hamper")
-                    }
-                }
-            }
-
-            item{
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp)
-                        .aspectRatio(1f)
-                        .align(Alignment.CenterHorizontally),
-                    contentAlignment = Alignment.Center
-                ){
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Filled.Tag,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clickable(true, onClick = {})
-                                .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
-                                .padding(18.dp)
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        Text("Promo")
-                    }
-                }
-            }
-        }
 
         Spacer(Modifier.height(24.dp))
         Row(
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp, 0.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_buket_80),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clickable(true, onClick = {})
+                            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
+                            .padding(18.dp),
+                        tint = MaterialTheme.colorScheme.tertiary
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text("Buket")
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_hamper_80),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clickable(true, onClick = {})
+                            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
+                            .padding(18.dp),
+                        tint = MaterialTheme.colorScheme.tertiary
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text("Hamper")
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_custom_80),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clickable(true, onClick = {})
+                            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
+                            .padding(18.dp),
+                        tint = MaterialTheme.colorScheme.tertiary
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text("Custom")
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_promo_80),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clickable(true, onClick = {})
+                            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
+                            .padding(18.dp),
+                        tint = MaterialTheme.colorScheme.tertiary
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text("Promo")
+                }
+            }
+        }
+        Spacer(Modifier.height(24.dp))
+        MiddleSection()
+        Spacer(Modifier.height(24.dp))
+        Row(
+            modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Product Terlaris"
+                text = "Product Terlaris",
+                fontFamily = LiberationSansFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 4.em
             )
             Text(
                 text = "Lihat Semua",
                 modifier = Modifier
                     .clickable(onClick = {}),
-                color = Color.Blue
+                fontFamily = LiberationSansFamily,
+                color = MaterialTheme.colorScheme.tertiary
             )
         }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(24.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-        ){
-            items(count = 12){
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(2.dp, RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
-                        .aspectRatio(1f)
-                        .clickable(onClick = {})
+        Spacer(Modifier.height(12.dp))
 
-                        .align(Alignment.CenterHorizontally),
-                    contentAlignment = Alignment.Center
-                ){
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Filled.Construction,
-                            contentDescription = null
-                        )
-                        Text(
-                            "Item Name",
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f),
-                            textAlign = TextAlign.Start
-                        )
-                        Text(
-                            "Rp.0",
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f),
-                            textAlign = TextAlign.Start
-                        )
-                    }
+        ListPopularProduct()
+    }
+}
+
+@Composable
+private fun MiddleSection(){
+    Row(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(20.dp))
+            .padding(20.dp, 12.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = "Special Gift",
+                fontFamily = LiberationSansFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 5.em
+            )
+            Text(
+                text = "For a Special Person",
+                fontFamily = LiberationSansFamily,
+            )
+            Spacer(Modifier.height(24.dp))
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .padding(8.dp, 4.dp),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = "Lihat Koleksi →",
+                    fontFamily = LiberationSansFamily,
+                    color = MaterialTheme.colorScheme.background
+                )
+            }
+        }
+        Image(
+            painter = painterResource(id= R.drawable.placeholder_300x200),
+            contentDescription = null,
+        )
+    }
+}
+
+@OptIn(ExperimentalGridApi::class)
+@Composable
+private fun ListPopularProduct(){
+    Grid(
+        config = {
+            gap(20.dp)
+            column(0.5f)
+            column(0.5f)
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        (1..10).forEach {
+
+            Card(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    MaterialTheme.colorScheme.primary,
+                    Color.Black
+                )
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        painter = painterResource(id = R.drawable.placeholder_400),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                    )
+                    Text(
+                        "Item Name",
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f),
+                        textAlign = TextAlign.Start,
+                        fontFamily = LiberationSansFamily,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        "Rp.0",
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f),
+                        textAlign = TextAlign.Start,
+                        fontFamily = LiberationSansFamily,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                    Spacer(Modifier.height(12.dp))
                 }
             }
         }
     }
+//    Row(
+//        modifier = Modifier.fillMaxWidth(),
+//        horizontalArrangement = Arrangement.SpaceBetween
+//    ){
+//    }
+
 }
