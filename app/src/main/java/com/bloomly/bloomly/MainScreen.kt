@@ -1,13 +1,7 @@
 package com.bloomly.bloomly
 
-import android.content.res.Resources
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -20,23 +14,19 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.bloomly.bloomly.Routes
+import com.bloomly.bloomly.home.HomeRoute
+import com.bloomly.bloomly.home.HomeScreen
 import com.bloomly.bloomly.profile.ProfileRoute
 import kotlinx.coroutines.launch
 
@@ -62,7 +52,7 @@ fun MainScreen(){
             modifier = Modifier.padding(padding)
         ){
             composable(Routes.Home.route) {
-                HomeScreen({ it })
+                HomeRoute {  }
             }
             composable(Routes.Login.route) {
                 LoginScreen(
@@ -91,13 +81,15 @@ fun MainScreen(){
                     }
                 )
             }
-            composable(Routes.Profile.route){ ProfileRoute(
-                onLoggedOut = {
-                    navController.navigate(Routes.Login.route) {
-                        launchSingleTop = true
+            composable(Routes.Profile.route){
+                ProfileRoute(
+                    onLoggedOut = {
+                        navController.navigate(Routes.Login.route) {
+                            launchSingleTop = true
+                        }
                     }
-                }
-            ) }
+                )
+            }
         }
     }
 }
@@ -114,7 +106,7 @@ fun BottomBar(currentRoute: String?, navController: NavController){
             ){
                 NavItems.forEach { item -> //https://developer.android.com/guide/navigation/backstack#pop-actions
                     NavigationBarItem(
-                        selected = currentRoute == item.route,
+                        selected = false,
                         alwaysShowLabel = true,
                         onClick = {
                             navController.navigate(item.route){
@@ -122,10 +114,27 @@ fun BottomBar(currentRoute: String?, navController: NavController){
                             }
                         },
                         icon = { Icon(
-                            imageVector = item.icon,
-                            contentDescription = null
+                            painter =
+                                if(currentRoute == item.route){
+                                    painterResource(item.iconFilled)
+                                }
+                                else{
+                                    painterResource(item.icon)
+                                },
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.tertiary
                         )},
-                        label = {Text(item.label)}
+                        label = {Text(
+                            text = item.label,
+                            fontWeight =
+                                if(currentRoute == item.route){
+                                    FontWeight.Bold
+                                }
+                                else{
+                                    FontWeight.Normal
+                                }
+                            )
+                        }
                     )
                 }
             }

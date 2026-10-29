@@ -12,29 +12,35 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class NavItem(
     val label: String,
     val route: String,
-    val icon: ImageVector
+    val icon: Int,
+    val iconFilled: Int
 )
 
 val NavItems = listOf<NavItem>(
     NavItem(
-        "Home",
-        Routes.Home.route,
-        Icons.Filled.Home
+        label      = "Home",
+        route      = Routes.Home.route,
+        icon       = R.drawable.icon_home_80,
+        iconFilled = R.drawable.icon_home_filled_80
+
     ),
     NavItem(
-        "Kategeri",
-        "#",
-        Icons.Filled.Menu
+        label      = "Kategeri",
+        route      = "#",
+        icon       = R.drawable.icon_kategory_80,
+        iconFilled = R.drawable.icon_kategory_filled_80
+
     ),
     NavItem(
-//      "Pesanan",
-        "Login",
-      Routes.Login.route,
-      Icons.Filled.List
+        label      = "Pesanan",
+        route      = Routes.Login.route,
+        icon       = R.drawable.icon_pesanan_80,
+        iconFilled = R.drawable.icon_pesanan_filled_80
     ),
     NavItem(
-        "Profile",
-        Routes.Profile.route,
-        Icons.Filled.Person
+        label      = "Profile",
+        route      = Routes.Profile.route,
+        icon       = R.drawable.icon_profile_80,
+        iconFilled = R.drawable.icon_profile_filled_80
     )
 )

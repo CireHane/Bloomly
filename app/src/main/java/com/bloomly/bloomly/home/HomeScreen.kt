@@ -1,5 +1,6 @@
-package com.bloomly.bloomly
+package com.bloomly.bloomly.home
 
+import android.transition.CircularPropagation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,15 +21,12 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.GridView
-import androidx.compose.material.icons.filled.HeartBroken
-import androidx.compose.material.icons.filled.Percent
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.SetMeal
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -47,18 +45,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.bloomly.bloomly.R
+import com.bloomly.bloomly.data.Item
 import com.bloomly.bloomly.ui.theme.LiberationSansFamily
 
-@Preview
+//@Preview
+//@Composable
+//private fun PreviewHomeScreen(){
+//    Scaffold(Modifier.fillMaxWidth()) { padding ->
+//        Spacer(Modifier.padding(padding))
+//        HomeScreen(onSearch = {})
+//    }
+//}
+
 @Composable
-private fun PreviewHomeScreen(){
-    Scaffold(Modifier.fillMaxWidth()) { padding ->
-        Spacer(Modifier.padding(padding))
-        HomeScreen(onSearch = {})
-    }
-}
-@Composable
-fun HomeScreen(onSearch: (String) -> Unit){
+fun HomeScreen(
+    uiState: HomeUiState,
+    onSearch: (String) -> Unit
+){
     val searchBarState = rememberTextFieldState()
 
     Column(
@@ -214,7 +218,10 @@ fun HomeScreen(onSearch: (String) -> Unit){
         }
         Spacer(Modifier.height(12.dp))
 
-        ListPopularProduct()
+        when{
+            uiState.isLoading -> LoadingCompose()
+            else -> ListPopularProduct( uiState.popularItems )
+        }
     }
 }
 
@@ -263,7 +270,7 @@ private fun MiddleSection(){
 
 @OptIn(ExperimentalGridApi::class)
 @Composable
-private fun ListPopularProduct(){
+private fun ListPopularProduct(popularItems: List<Item>){
     Grid(
         config = {
             gap(20.dp)
@@ -272,7 +279,7 @@ private fun ListPopularProduct(){
         },
         modifier = Modifier.fillMaxWidth()
     ) {
-        (1..10).forEach {
+        popularItems.forEach { item ->
 
             Card(
 //                modifier = Modifier
@@ -284,7 +291,7 @@ private fun ListPopularProduct(){
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(
-                        painter = painterResource(id = R.drawable.placeholder_400),
+                        painter = painterResource(id = item.image),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
@@ -292,20 +299,20 @@ private fun ListPopularProduct(){
                             .clip(RoundedCornerShape(8.dp))
                     )
                     Text(
-                        "Item Name",
+                        text = item.name,
                         modifier = Modifier
                             .fillMaxWidth(0.9f),
                         textAlign = TextAlign.Start,
                         fontFamily = LiberationSansFamily,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Normal
                     )
                     Text(
-                        "Rp.0",
+                        text = "Rp." + formatPrice(item.price),
                         modifier = Modifier
                             .fillMaxWidth(0.9f),
                         textAlign = TextAlign.Start,
                         fontFamily = LiberationSansFamily,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.tertiary
                     )
                     Spacer(Modifier.height(12.dp))
@@ -313,10 +320,28 @@ private fun ListPopularProduct(){
             }
         }
     }
-//    Row(
-//        modifier = Modifier.fillMaxWidth(),
-//        horizontalArrangement = Arrangement.SpaceBetween
-//    ){
-//    }
+}
 
+@Composable
+fun LoadingCompose(){
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 64.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.tertiary,
+            strokeWidth = 6.dp
+        )
+    }
+}
+
+// TODO - Find a better way
+private fun formatPrice(price : Int) : String{
+     return price.toString()
+        .reversed()
+        .chunked(3)
+        .joinToString(".")
+        .reversed()
 }

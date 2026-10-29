@@ -1,16 +1,7 @@
 package com.bloomly.bloomly
 
 import android.app.Application
-import com.bloomly.bloomly.di.AppContainer
-import com.bloomly.bloomly.di.DefaultContainer
+import dagger.hilt.android.HiltAndroidApp
 
-class MainApplication: Application() {
-
-    lateinit var container: AppContainer
-        private set
-
-    override fun onCreate() {
-        super.onCreate()
-        container = DefaultContainer()
-    }
-}
+@HiltAndroidApp
+class MainApplication: Application()

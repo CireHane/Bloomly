@@ -2,13 +2,16 @@ package com.bloomly.bloomly.data
 
 import androidx.compose.runtime.remember
 import com.bloomly.bloomly.data.Profile
+import javax.inject.Inject
 
 interface ProfileRepository{
     suspend fun getProfile(): Profile
     fun getCachedProfile(): Profile
 }
 
-class FakeProfileRepository: ProfileRepository{
+class FakeProfileRepository @Inject constructor()
+: ProfileRepository
+{
     private val data = Profile(
         id = 1,
         username = "John Doe",
