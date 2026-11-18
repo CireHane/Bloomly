@@ -1,179 +1,395 @@
+
 package com.bloomly.bloomly
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.input.TextObfuscationMode
-import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.CardGiftcard
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+private val PinkBg = Color(0xFFFFF7F7)
+private val PinkField = Color(0xFFFFEFF1)
+private val Maroon = Color(0xFF8D4A53)
+private val DarkText = Color(0xFF59474A)
+private val HintText = Color(0xFFB49FA2)
+
 @Composable
-fun LoginScreen(onSubmit: (String, String) -> Unit){
-    val username = rememberTextFieldState()
-    val usernameError = remember { mutableStateOf(false) }
+fun LoginScreen(
+    onSubmit: (String, String) -> Unit,
+    onRegister: () -> Unit = {},
+    onBack: () -> Unit = {}
+) {
+
+    val email = rememberTextFieldState()
     val password = rememberTextFieldState()
-    val passwordError = remember { mutableStateOf(false) }
-    val showPassword = remember { mutableStateOf(false) }
+
+    var showPassword by remember { mutableStateOf(false) }
+    var emailError by remember { mutableStateOf(false) }
+    var passwordError by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .fillMaxSize()
+            .background(PinkBg)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp)
     ) {
+
+        // HEADER
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Default.ArrowBack,
+                contentDescription = "Back",
+                tint = DarkText,
+                modifier = Modifier.clickable { onBack() }
+            )
+
+            Spacer(Modifier.weight(1f))
+
+            Text(
+                "Login",
+                fontWeight = FontWeight.SemiBold,
+                color = DarkText,
+                fontSize = 18.sp
+            )
+
+            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.size(24.dp))
+        }
+
+        Spacer(Modifier.height(12.dp))
+
+        // BADGE
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                modifier = Modifier
+                    .background(
+                        PinkField,
+                        RoundedCornerShape(50.dp)
+                    )
+                    .padding(horizontal = 12.dp, vertical = 5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    Icons.Default.CardGiftcard,
+                    contentDescription = null,
+                    tint = Maroon,
+                    modifier = Modifier.size(13.dp)
+                )
+
+                Spacer(Modifier.width(5.dp))
+
+                Text(
+                    "MORE THAN JUST A GIFT",
+                    fontSize = 9.sp,
+                    color = Maroon,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+
+        Spacer(Modifier.height(20.dp))
+
+        // TITLE
         Text(
             "Welcome Back!",
-            fontSize = 42.sp,
-            fontWeight = FontWeight.Bold
+            modifier = Modifier.fillMaxWidth(),
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            color = DarkText,
+            textAlign = TextAlign.Center
         )
+
+        Spacer(Modifier.height(5.dp))
+
         Text(
-            "Masuk untuk melanjutkan pemesanan Anda"
+            "Masuk untuk melanjutkan pesanan manis Anda",
+            modifier = Modifier.fillMaxWidth(),
+            fontSize = 13.sp,
+            color = HintText,
+            textAlign = TextAlign.Center
         )
 
+        Spacer(Modifier.height(24.dp))
 
+        // LOGIN FORM
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(24.dp))
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxWidth()
+                .background(
+                    Color.White,
+                    RoundedCornerShape(22.dp)
+                )
+                .padding(16.dp)
         ) {
-            Text("Username")
+
+            // EMAIL
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Default.Email,
+                    contentDescription = null,
+                    tint = Maroon,
+                    modifier = Modifier.size(16.dp)
+                )
+
+                Spacer(Modifier.width(6.dp))
+
+                Text(
+                    "Email atau Nomor HP",
+                    fontSize = 13.sp,
+                    color = DarkText
+                )
+            }
+
+            Spacer(Modifier.height(7.dp))
+
             OutlinedTextField(
-                state = username,
-                placeholder = { Text("username")},
-                modifier = Modifier.fillMaxWidth(),
-                isError = usernameError.value,
-                supportingText = {
-                    if(usernameError.value){
-                        Text(
-                            "username required"
-                        )
-                    }
-                }
+                state = email,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(58.dp),
+                placeholder = {
+                    Text(
+                        "nama@email.com / 0812xxx",
+                        fontSize = 13.sp,
+                        color = HintText
+                    )
+                },
+                singleLine = true,
+                isError = emailError,
+                shape = RoundedCornerShape(13.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = PinkField,
+                    unfocusedContainerColor = PinkField,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    errorBorderColor = Maroon,
+                    focusedTextColor = DarkText,
+                    unfocusedTextColor = DarkText
+                )
             )
-            Spacer(Modifier.height(16.dp))
-            Text("Password")
+
+            // PASSWORD
+            Spacer(Modifier.height(10.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Default.Lock,
+                    contentDescription = null,
+                    tint = Maroon,
+                    modifier = Modifier.size(16.dp)
+                )
+
+                Spacer(Modifier.width(6.dp))
+
+                Text(
+                    "Password",
+                    fontSize = 13.sp,
+                    color = DarkText
+                )
+            }
+
+            Spacer(Modifier.height(7.dp))
+
             BasicSecureTextField(
                 state = password,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(58.dp),
+                textStyle = TextStyle(
+                    fontSize = 13.sp,
+                    color = DarkText
+                ),
+                cursorBrush = SolidColor(Maroon),
                 textObfuscationMode =
-                    if(showPassword.value)
+                    if (showPassword)
                         TextObfuscationMode.Visible
                     else
                         TextObfuscationMode.Hidden,
+
                 decorator = { innerTextField ->
-                    Box(
+                    Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .requiredHeight(52.dp)
-                            .border(
-                                width = 1.dp,
-                                brush =
-                                    if(passwordError.value){
-                                        SolidColor(Color.Red)
-                                    }else{
-                                        SolidColor(Color.Black)
-                                    },
-                                shape = RoundedCornerShape(4.dp)
+                            .fillMaxSize()
+                            .background(
+                                PinkField,
+                                RoundedCornerShape(13.dp)
                             )
+                            .padding(horizontal = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.CenterStart)
-                                .padding(16.dp)
+                            modifier = Modifier.weight(1f)
                         ) {
-                            if(password.text == ""){
+                            if (password.text.isEmpty()) {
                                 Text(
-                                    "password",
-                                    modifier = Modifier.selectable(false, false, onClick = {})
+                                    "Masukkan kata sandi",
+                                    color = HintText,
+                                    fontSize = 13.sp
                                 )
                             }
+
                             innerTextField()
                         }
+
                         Icon(
                             imageVector =
-                                if(showPassword.value)
-                                    Icons.Filled.VisibilityOff
+                                if (showPassword)
+                                    Icons.Default.Visibility
                                 else
-                                    Icons.Filled.Visibility,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .align(Alignment.CenterEnd)
-                                .padding(end = 16.dp)
-                                .clickable(onClick = { showPassword.value = !showPassword.value })
+                                    Icons.Default.VisibilityOff,
+                            contentDescription = "Toggle Password",
+                            tint = Maroon,
+                            modifier = Modifier.clickable {
+                                showPassword = !showPassword
+                            }
                         )
                     }
                 }
             )
+
+            // FORGOT PASSWORD
             Text(
-                text = "Lupa Password?",
+                "Lupa password?",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp,10.dp)
-                    .clickable(true, onClick = {}),
-                textAlign = TextAlign.Right
+                    .padding(top = 9.dp)
+                    .clickable {
+                        // Fitur lupa password
+                    },
+                color = Maroon,
+                fontSize = 12.sp,
+                textAlign = TextAlign.End
             )
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(14.dp))
+
+            // LOGIN BUTTON
             Button(
                 onClick = {
-                    usernameError.value = username.text.toString() == ""
-                    passwordError.value = password.text.toString() == ""
+                    emailError = email.text.isEmpty()
+                    passwordError = password.text.isEmpty()
 
-                    showPassword.value = false
-                    if(!passwordError.value && !usernameError.value){
-                        onSubmit(username.text.toString(), password.text.toString())
+                    if (!emailError && !passwordError) {
+                        showPassword = false
+                        onSubmit(
+                            email.text.toString(),
+                            password.text.toString()
+                        )
                     }
-//                username.edit { delete(0,username.text.length) }
-//                password.edit { delete(0,password.text.length) }
                 },
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(32.dp),
-                colors = ButtonColors(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.primary,
-                    MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary)
+                    .fillMaxWidth()
+                    .height(52.dp),
+                shape = RoundedCornerShape(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Maroon
+                )
             ) {
-                Text("Login")
+                Text(
+                    "Login",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                Icon(
+                    Icons.Default.ArrowForward,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
             }
         }
+
+        Spacer(Modifier.height(16.dp))
+
+        // SECURITY MESSAGE
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Color(0xFFF9EDEF),
+                    RoundedCornerShape(13.dp)
+                )
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Default.Lock,
+                contentDescription = null,
+                tint = Maroon,
+                modifier = Modifier.size(18.dp)
+            )
+
+            Spacer(Modifier.width(10.dp))
+
+            Text(
+                "Setiap transaksi dirangkai penuh kehangatan tanpa mengorbankan keamanan.",
+                fontSize = 10.sp,
+                color = DarkText,
+                lineHeight = 15.sp
+            )
+        }
+
+        Spacer(Modifier.height(18.dp))
+
+        // REGISTER
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Belum punya akun?",
+                fontSize = 12.sp,
+                color = HintText
+            )
+
+            Spacer(Modifier.width(5.dp))
+
+            Text(
+                "Daftar",
+                fontSize = 12.sp,
+                color = Maroon,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable {
+                    onRegister()
+                }
+            )
+        }
+
+        Spacer(Modifier.height(20.dp))
     }
 }
