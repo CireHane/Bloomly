@@ -29,6 +29,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -45,8 +47,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import com.bloomly.bloomly.R
 import com.bloomly.bloomly.data.Item
+import com.bloomly.bloomly.formatPrice
 import com.bloomly.bloomly.ui.theme.LiberationSansFamily
 
 //@Preview
@@ -92,7 +96,8 @@ fun HomeScreen(
             color = Color(0x65000000)
         )
         Spacer(Modifier.height(48.dp))
-        TextField(
+
+        OutlinedTextField(
             state = searchBarState,
             modifier = Modifier
                 .fillMaxWidth(),
@@ -107,7 +112,15 @@ fun HomeScreen(
                         .clickable(onClick = { onSearch(searchBarState.toString()) })
                 )
             },
-            lineLimits = TextFieldLineLimits.SingleLine
+            lineLimits = TextFieldLineLimits.SingleLine,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedTextColor = MaterialTheme.colorScheme.tertiary
+            ),
         )
 
         Spacer(Modifier.height(24.dp))
@@ -133,7 +146,11 @@ fun HomeScreen(
                         tint = MaterialTheme.colorScheme.tertiary
                     )
                     Spacer(Modifier.height(8.dp))
-                    Text("Buket")
+                    Text(
+                        "Buket",
+                        fontSize = 13.sp,
+                        fontFamily = LiberationSansFamily
+                    )
                 }
             }
             Box(
@@ -152,7 +169,11 @@ fun HomeScreen(
                         tint = MaterialTheme.colorScheme.tertiary
                     )
                     Spacer(Modifier.height(8.dp))
-                    Text("Hamper")
+                    Text(
+                        "Hamper",
+                        fontSize = 13.sp,
+                        fontFamily = LiberationSansFamily
+                    )
                 }
             }
             Box(
@@ -171,7 +192,11 @@ fun HomeScreen(
                         tint = MaterialTheme.colorScheme.tertiary
                     )
                     Spacer(Modifier.height(8.dp))
-                    Text("Custom")
+                    Text(
+                        "Uang",
+                        fontSize = 13.sp,
+                        fontFamily = LiberationSansFamily
+                    )
                 }
             }
             Box(
@@ -190,7 +215,11 @@ fun HomeScreen(
                         tint = MaterialTheme.colorScheme.tertiary
                     )
                     Spacer(Modifier.height(8.dp))
-                    Text("Promo")
+                    Text(
+                        "Promo",
+                        fontSize = 13.sp,
+                        fontFamily = LiberationSansFamily
+                    )
                 }
             }
         }
@@ -213,7 +242,8 @@ fun HomeScreen(
                 modifier = Modifier
                     .clickable(onClick = {}),
                 fontFamily = LiberationSansFamily,
-                color = MaterialTheme.colorScheme.tertiary
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 14.sp,
             )
         }
         Spacer(Modifier.height(12.dp))
@@ -335,13 +365,4 @@ fun LoadingCompose(){
             strokeWidth = 6.dp
         )
     }
-}
-
-// TODO - Find a better way
-private fun formatPrice(price : Int) : String{
-     return price.toString()
-        .reversed()
-        .chunked(3)
-        .joinToString(".")
-        .reversed()
 }

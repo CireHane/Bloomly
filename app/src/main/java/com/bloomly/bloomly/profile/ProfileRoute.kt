@@ -9,12 +9,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bloomly.bloomly.MainApplication
 
 @Composable
-fun ProfileRoute( onLoggedOut : () -> Unit ) {
+fun ProfileRoute( onBack : () -> Unit , onLoggedOut : () -> Unit, onClickEdit : () -> Unit) {
     val viewModel: ProfileViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     ProfileScreen(
-        uiState = uiState,
-        onLoggedOut = onLoggedOut
+        onBack = onBack,
+        onLoggedOut = onLoggedOut,
+        onClickEdit = onClickEdit,
+        uiState = uiState
     )
 }

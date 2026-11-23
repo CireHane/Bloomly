@@ -16,7 +16,8 @@ class FakeProfileRepository @Inject constructor()
         id = 1,
         username = "John Doe",
         email = "John0011@email.com",
-        noTelp = "081234567890"
+        phone = "081234567890",
+        address = "Jl. Boulevard Diponegoro No.1100, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15811"
     )
 
     var cached: Profile? = null

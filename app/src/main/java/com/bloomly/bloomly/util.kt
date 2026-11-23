@@ -1,0 +1,9 @@
+package com.bloomly.bloomly
+
+fun formatPrice(price : Int) : String{
+    return price.toString()
+        .reversed()
+        .chunked(3)
+        .joinToString(".")
+        .reversed()
+}

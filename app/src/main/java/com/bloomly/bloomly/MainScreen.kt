@@ -25,6 +25,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.bloomly.bloomly.category.CategoryScreen
+import com.bloomly.bloomly.category.search.CatagorySearchScreen
+import com.bloomly.bloomly.category.search.CategorySearchRoute
 import com.bloomly.bloomly.home.HomeRoute
 import com.bloomly.bloomly.home.HomeScreen
 import com.bloomly.bloomly.profile.ProfileRoute
@@ -54,6 +57,43 @@ fun MainScreen(){
             composable(Routes.Home.route) {
                 HomeRoute {  }
             }
+            composable(Routes.Category.route) {
+                CategoryScreen(
+                    onBack = {navController.popBackStack()},
+                    onClickFlower = {
+                        navController.navigate(Routes.Search.route){
+                            launchSingleTop = true
+                        }
+                    },
+                    onClickHamper = {
+                        navController.navigate(Routes.Search.route){
+                            launchSingleTop = true
+                        }
+                    },
+                    onClickMoney = {
+                        navController.navigate(Routes.Search.route){
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
+            composable(Routes.Buket.route){
+
+            }
+            composable(Routes.Hamper.route){
+
+            }
+            composable(Routes.Uang.route){
+
+            }
+            composable(Routes.Search.route){
+                CategorySearchRoute(
+                    category = "",
+                    search = "",
+                    onBack = { navController.popBackStack() },
+                    onSearch = {text -> print(text)}
+                )
+            }
             composable(Routes.Login.route) {
                 LoginScreen(
                     onSubmit = { username, password ->
@@ -78,16 +118,20 @@ fun MainScreen(){
                                 }
                             }
                         }
-                    }
+                    },
+                    onRegister = {},
+                    onBack = {navController.popBackStack()}
                 )
             }
             composable(Routes.Profile.route){
                 ProfileRoute(
+                    onBack = {navController.popBackStack()},
                     onLoggedOut = {
                         navController.navigate(Routes.Login.route) {
                             launchSingleTop = true
                         }
-                    }
+                    },
+                    onClickEdit = {}
                 )
             }
         }

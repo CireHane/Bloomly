@@ -25,8 +25,8 @@ val NavItems = listOf<NavItem>(
 
     ),
     NavItem(
-        label      = "Kategeri",
-        route      = "#",
+        label      = "Kategori",
+        route      = Routes.Category.route,
         icon       = R.drawable.icon_kategory_80,
         iconFilled = R.drawable.icon_kategory_filled_80
 

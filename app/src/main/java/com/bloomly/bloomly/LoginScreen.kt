@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.CardGiftcard
 import androidx.compose.material.icons.filled.Email
@@ -29,9 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-private val PinkBg = Color(0xFFFFF7F7)
-private val PinkField = Color(0xFFFFEFF1)
 private val Maroon = Color(0xFF8D4A53)
 private val DarkText = Color(0xFF59474A)
 private val HintText = Color(0xFFB49FA2)
@@ -53,7 +52,7 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(PinkBg)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp)
     ) {
@@ -66,7 +65,7 @@ fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                Icons.Default.ArrowBack,
+                Icons.Filled.ArrowBackIosNew,
                 contentDescription = "Back",
                 tint = DarkText,
                 modifier = Modifier.clickable { onBack() }
@@ -95,7 +94,7 @@ fun LoginScreen(
             Row(
                 modifier = Modifier
                     .background(
-                        PinkField,
+                        MaterialTheme.colorScheme.secondary,
                         RoundedCornerShape(50.dp)
                     )
                     .padding(horizontal = 12.dp, vertical = 5.dp),
@@ -186,18 +185,18 @@ fun LoginScreen(
                         color = HintText
                     )
                 },
-                singleLine = true,
                 isError = emailError,
                 shape = RoundedCornerShape(13.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = PinkField,
-                    unfocusedContainerColor = PinkField,
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
                     errorBorderColor = Maroon,
                     focusedTextColor = DarkText,
                     unfocusedTextColor = DarkText
-                )
+                ),
+                lineLimits = TextFieldLineLimits.SingleLine
             )
 
             // PASSWORD
@@ -243,7 +242,7 @@ fun LoginScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(
-                                PinkField,
+                                MaterialTheme.colorScheme.secondary,
                                 RoundedCornerShape(13.dp)
                             )
                             .padding(horizontal = 14.dp),

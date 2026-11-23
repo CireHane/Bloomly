@@ -56,6 +56,10 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
+    //Room
+    implementation(libs.androidx.room3.runtime)
+    ksp(libs.androidx.room3.compiler)
+
     // Hilt
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
